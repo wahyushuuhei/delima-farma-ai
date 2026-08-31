@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d9457" />
+  <meta name="description" content="Prototype konsultasi AI Apotek Delima Farma — demo antarmuka, bukan pengganti nasihat medis profesional." />
+  <title>Delima Farma AI Consultation</title>
+  <style>
+    :root {
+      --green-900: #0b3d2e;
+      --green-700: #0d9457;
+      --green-600: #12b76a;
+      --green-50: #ecfdf5;
+      --amber-500: #d97706;
+      --ink: #16241f;
+      --muted: #5b6b64;
+      --bg: #f4faf7;
+      --card: #ffffff;
+      --border: #dbeee4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: linear-gradient(135deg, var(--green-900), var(--green-700));
+      color: #fff;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    header h1 { font-size: 18px; margin: 0; }
+    header p { margin: 2px 0 0; font-size: 12.5px; opacity: 0.85; }
+
+    main {
+      flex: 1;
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 16px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .disclaimer {
+      background: #fff7ed;
+      border: 1px solid #fde3b4;
+      color: #92400e;
+      font-size: 12.5px;
+      line-height: 1.5;
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
+
+    .chat-log {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .msg {
+      max-width: 82%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 14.5px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .msg.bot {
+      align-self: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+    }
+    .msg.user {
+      align-self: flex-end;
+      background: var(--green-700);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.bot .label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green-700);
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .suggestions button {
+      border: 1px solid var(--border);
+      background: var(--green-50);
+      color: var(--green-900);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 12.5px;
+      cursor: pointer;
+    }
+    .suggestions button:hover { background: #d9f5e6; }
+
+    form.composer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      display: flex;
+      justify-content: center;
+    }
+    .composer-inner {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      gap: 8px;
+    }
+    .composer-inner input {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 14.5px;
+      outline: none;
+    }
+    .composer-inner input:focus { border-color: var(--green-600); }
+    .composer-inner button {
+      background: var(--green-700);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .composer-inner button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    footer.note {
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--muted);
+      padding: 4px 16px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">💊</div>
+    <div>
+      <h1>Delima Farma AI Consultation</h1>
+      <p>Prototype demo — antarmuka konsultasi apotek berbasis AI</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="disclaimer">
+      ⚠️ <strong>Ini prototype demo statis.</strong> Jawaban di bawah adalah respons contoh yang sudah ditentukan
+      (bukan model AI sungguhan yang terhubung ke backend). Tidak dimaksudkan sebagai pengganti konsultasi
+      dengan apoteker atau tenaga medis berizin. Untuk keluhan serius, segera hubungi apotek/tenaga kesehatan.
+    </div>
+
+    <div class="chat-log" id="chatLog">
+      <div class="msg bot">
+        <span class="label">Delima AI</span>
+        Halo! Saya asisten konsultasi Apotek Delima Farma (mode demo). Ceritakan keluhan Anda, atau pilih salah satu topik di bawah.
+      </div>
+    </div>
+
+    <div class="suggestions">
+      <button type="button" data-q="Obat apa untuk sakit kepala ringan?">Sakit kepala ringan</button>
+      <button type="button" data-q="Anak demam 38°C, apa yang harus dilakukan?">Demam pada anak</button>
+      <button type="button" data-q="Apakah obat flu boleh diminum bersama obat maag?">Interaksi obat flu &amp; maag</button>
+      <button type="button" data-q="Jam buka apotek hari ini?">Jam buka apotek</button>
+    </div>
+
+    <footer class="note">Delima Farma AI Consultation — prototype front-end statis, tanpa koneksi backend.</footer>
+  </main>
+
+  <form class="composer" id="composerForm">
+    <div class="composer-inner">
+      <input
+        id="composerInput"
+        type="text"
+        placeholder="Tulis pertanyaan seputar obat atau kesehatan..."
+        autocomplete="off"
+      />
+      <button type="submit">Kirim</button>
+    </div>
+  </form>
+
+  <script>
+    const chatLog = document.getElementById('chatLog');
+    const form = document.getElementById('composerForm');
+    const input = document.getElementById('composerInput');
+
+    function addMessage(text, role) {
+      const el = document.createElement('div');
+      el.className = 'msg ' + role;
+      if (role === 'bot') {
+        el.innerHTML = '<span class="label">Delima AI</span>' + text;
+      } else {
+        el.textContent = text;
+      }
+      chatLog.appendChild(el);
+      el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+
+    // Static canned responses for demo purposes only — no real clinical logic.
+    function getCannedReply(question) {
+      const q = question.toLowerCase();
+      if (q.includes('kepala')) {
+        return 'Untuk sakit kepala ringan, parasetamol biasanya menjadi pilihan pertama sesuai dosis pada kemasan. ' +
+          'Ini hanya info umum demo — kondisi berulang atau berat sebaiknya diperiksakan ke apoteker/dokter.';
+      }
+      if (q.includes('demam') || q.includes('anak')) {
+        return 'Untuk demam anak, pantau suhu tubuh dan pastikan cairan tercukupi. ' +
+          'Ini contoh jawaban demo, bukan diagnosis — untuk demam tinggi atau berkepanjangan, segera konsultasi ke tenaga medis.';
+      }
+      if (q.includes('interaksi') || q.includes('maag') || q.includes('flu')) {
+        return 'Beberapa kombinasi obat berpotensi berinteraksi. Contoh jawaban demo ini tidak memeriksa data interaksi nyata — ' +
+          'selalu tanyakan ke apoteker sebelum mengombinasikan obat.';
+      }
+      if (q.includes('jam') || q.includes('buka')) {
+        return 'Jam operasional apotek (contoh demo): 08.00–21.00 setiap hari. Silakan sesuaikan dengan jam operasional apotek Anda yang sebenarnya.';
+      }
+      return 'Terima kasih atas pertanyaannya. Ini adalah respons contoh (demo statis) — di versi produksi, jawaban akan dihasilkan ' +
+        'oleh sistem AI yang terhubung ke basis pengetahuan apotek dan tetap divalidasi oleh apoteker.';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      input.value = '';
+      setTimeout(function () {
+        addMessage(getCannedReply(text), 'bot');
+      }, 400);
+    });
+
+    document.querySelectorAll('.suggestions button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        input.value = btn.getAttribute('data-q');
+        form.dispatchEvent(new Event('submit'));
+      });
+    });
+  </script>
+</body>
+</html>
