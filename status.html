@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d9457" />
+  <meta name="description" content="Cek status konsultasi Delima Farma AI Consultation." />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+  <title>Status Konsultasi — Delima Farma</title>
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <div id="offlineBadge">⚠️ Kamu sedang offline — status terbaru butuh koneksi internet.</div>
+
+  <header class="top">
+    <div class="logo">💊</div>
+    <div>
+      <h1>Status Konsultasi</h1>
+      <p>Delima Farma AI Consultation</p>
+    </div>
+    <nav><a href="/">Konsultasi baru</a></nav>
+  </header>
+
+  <main>
+    <div id="tokenPrompt" class="card" style="display:none;">
+      <label for="tokenInput">Masukkan link atau kode konsultasi kamu</label>
+      <input type="text" id="tokenInput" placeholder="Tempel link atau kode di sini" />
+      <button class="primary" id="tokenSubmitBtn" type="button">Cek Status</button>
+    </div>
+
+    <div id="loadingState" class="card spinner" style="display:none;">Memuat status konsultasi...</div>
+
+    <div id="notFoundState" class="card empty-state" style="display:none;">
+      Konsultasi tidak ditemukan. Pastikan link/kode yang kamu masukkan benar,
+      atau <a href="/">buat konsultasi baru</a>.
+    </div>
+
+    <div id="resultState" class="card" style="display:none;">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="badge" id="statusBadge">-</span>
+        <span class="badge kategori" id="kategoriBadge">-</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Dikirim: <span id="createdAt">-</span></p>
+
+      <div id="answerBlock" style="display:none;margin-top:16px;">
+        <p class="field-label">Jawaban dari apotek</p>
+        <p id="jawabanText" style="font-size:14.5px;line-height:1.6;"></p>
+        <p style="font-size:12px;color:var(--muted);">Ditinjau: <span id="reviewedAt">-</span></p>
+      </div>
+
+      <div id="waitingBlock" style="display:none;margin-top:16px;">
+        <p style="font-size:13.5px;color:var(--muted);">
+          Konsultasimu masih dalam antrian peninjauan. Halaman ini akan menampilkan jawaban begitu
+          apoteker/dokter kami selesai meninjau — cek lagi beberapa saat lagi.
+        </p>
+      </div>
+    </div>
+
+    <footer class="contact">
+      <div class="divider"></div>
+      💬 Apoteker (WhatsApp): +62 853-2122-0024
+    </footer>
+  </main>
+
+  <script type="module">
+    import { requireConfig, configReady } from "/assets/supabase-client.js";
+
+    const tokenPrompt = document.getElementById("tokenPrompt");
+    const loadingState = document.getElementById("loadingState");
+    const notFoundState = document.getElementById("notFoundState");
+    const resultState = document.getElementById("resultState");
+
+    function hideAll() {
+      [tokenPrompt, loadingState, notFoundState, resultState].forEach((el) => (el.style.display = "none"));
+    }
+
+    function extractTokenFromPath() {
+      // URL bentuk /status/{token} di-rewrite ke status.html oleh vercel.json,
+      // tapi path asli tetap /status/{token} di browser.
+      const parts = location.pathname.split("/").filter(Boolean);
+      if (parts.length >= 2 && parts[0] === "status") return parts[1];
+      const q = new URLSearchParams(location.search).get("token");
+      return q || null;
+    }
+
+    async function loadStatus(token) {
+      hideAll();
+      loadingState.style.display = "block";
+      if (!configReady) {
+        notFoundState.textContent = "Sistem belum terhubung ke database (config kosong).";
+        hideAll();
+        notFoundState.style.display = "block";
+        return;
+      }
+      try {
+        const supabase = requireConfig();
+        const { data, error } = await supabase.rpc("get_consultation_status", { p_token: token });
+        hideAll();
+        if (error || !data || data.length === 0) {
+          notFoundState.style.display = "block";
+          return;
+        }
+        const row = data[0];
+        document.getElementById("statusBadge").textContent = row.status.replaceAll("_", " ");
+        document.getElementById("statusBadge").className = "badge " + row.status;
+        document.getElementById("kategoriBadge").textContent = row.kategori.replaceAll("_", " ");
+        document.getElementById("createdAt").textContent = new Date(row.created_at).toLocaleString("id-ID");
+
+        if (row.jawaban) {
+          document.getElementById("jawabanText").textContent = row.jawaban;
+          document.getElementById("reviewedAt").textContent = row.reviewed_at
+            ? new Date(row.reviewed_at).toLocaleString("id-ID")
+            : "-";
+          document.getElementById("answerBlock").style.display = "block";
+        } else {
+          document.getElementById("waitingBlock").style.display = "block";
+        }
+        resultState.style.display = "block";
+      } catch (_err) {
+        hideAll();
+        notFoundState.textContent = "Gagal memuat status (kemungkinan kamu sedang offline). Coba lagi nanti.";
+        notFoundState.style.display = "block";
+      }
+    }
+
+    const token = extractTokenFromPath();
+    if (token) {
+      loadStatus(token);
+    } else {
+      hideAll();
+      tokenPrompt.style.display = "block";
+      document.getElementById("tokenSubmitBtn").addEventListener("click", () => {
+        const raw = document.getElementById("tokenInput").value.trim();
+        if (!raw) return;
+        const t = raw.includes("/") ? raw.split("/").filter(Boolean).pop() : raw;
+        history.replaceState(null, "", "/status/" + t);
+        loadStatus(t);
+      });
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      });
+    }
+    function updateOfflineBadge() {
+      document.body.classList.toggle("is-offline", !navigator.onLine);
+    }
+    window.addEventListener("online", updateOfflineBadge);
+    window.addEventListener("offline", updateOfflineBadge);
+    updateOfflineBadge();
+  </script>
+</body>
+</html>

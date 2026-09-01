@@ -4,272 +4,244 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0d9457" />
-  <meta name="description" content="Prototype konsultasi AI Apotek Delima Farma — demo antarmuka, bukan pengganti nasihat medis profesional." />
+  <meta name="description" content="Konsultasi awal apotek Delima Farma — intake terstruktur, ditinjau apoteker & dokter. Bukan diagnosis otomatis." />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
   <title>Delima Farma AI Consultation</title>
-  <style>
-    :root {
-      --green-900: #0b3d2e;
-      --green-700: #0d9457;
-      --green-600: #12b76a;
-      --green-50: #ecfdf5;
-      --amber-500: #d97706;
-      --ink: #16241f;
-      --muted: #5b6b64;
-      --bg: #f4faf7;
-      --card: #ffffff;
-      --border: #dbeee4;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      background: linear-gradient(135deg, var(--green-900), var(--green-700));
-      color: #fff;
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    header .logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-    header h1 { font-size: 18px; margin: 0; }
-    header p { margin: 2px 0 0; font-size: 12.5px; opacity: 0.85; }
-
-    main {
-      flex: 1;
-      max-width: 720px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 20px 16px 100px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .disclaimer {
-      background: #fff7ed;
-      border: 1px solid #fde3b4;
-      color: #92400e;
-      font-size: 12.5px;
-      line-height: 1.5;
-      padding: 10px 14px;
-      border-radius: 10px;
-    }
-
-    .chat-log {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-    }
-
-    .msg {
-      max-width: 82%;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-size: 14.5px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-    .msg.bot {
-      align-self: flex-start;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-bottom-left-radius: 4px;
-    }
-    .msg.user {
-      align-self: flex-end;
-      background: var(--green-700);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
-    .msg.bot .label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--green-700);
-      margin-bottom: 4px;
-      letter-spacing: 0.02em;
-    }
-
-    .suggestions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .suggestions button {
-      border: 1px solid var(--border);
-      background: var(--green-50);
-      color: var(--green-900);
-      border-radius: 999px;
-      padding: 7px 13px;
-      font-size: 12.5px;
-      cursor: pointer;
-    }
-    .suggestions button:hover { background: #d9f5e6; }
-
-    form.composer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-      display: flex;
-      justify-content: center;
-    }
-    .composer-inner {
-      width: 100%;
-      max-width: 720px;
-      display: flex;
-      gap: 8px;
-    }
-    .composer-inner input {
-      flex: 1;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      font-size: 14.5px;
-      outline: none;
-    }
-    .composer-inner input:focus { border-color: var(--green-600); }
-    .composer-inner button {
-      background: var(--green-700);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 0 18px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .composer-inner button:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    footer.note {
-      text-align: center;
-      font-size: 11.5px;
-      color: var(--muted);
-      padding: 4px 16px 0;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
-  <header>
+  <div id="offlineBadge">⚠️ Kamu sedang offline — halaman ini tetap bisa dibaca, tapi mengirim konsultasi butuh koneksi internet.</div>
+
+  <header class="top">
     <div class="logo">💊</div>
     <div>
       <h1>Delima Farma AI Consultation</h1>
-      <p>Prototype demo — antarmuka konsultasi apotek berbasis AI</p>
+      <p>Konsultasi awal — ditinjau apoteker &amp; dokter, bukan diagnosis otomatis</p>
     </div>
+    <nav>
+      <a href="/status.html">Cek status</a>
+    </nav>
   </header>
 
   <main>
     <div class="disclaimer">
-      ⚠️ <strong>Ini prototype demo statis.</strong> Jawaban di bawah adalah respons contoh yang sudah ditentukan
-      (bukan model AI sungguhan yang terhubung ke backend). Tidak dimaksudkan sebagai pengganti konsultasi
-      dengan apoteker atau tenaga medis berizin. Untuk keluhan serius, segera hubungi apotek/tenaga kesehatan.
+      ⚠️ <strong>Ini bukan layanan diagnosis otomatis.</strong> Sistem ini hanya mencatat keluhan Anda
+      (intake) untuk ditinjau oleh apoteker dan/atau dr. Wahyu Sholekhuddin, Sp.B. Jawaban tidak
+      dikirim otomatis oleh AI — selalu melalui pemeriksaan manusia sebelum Anda terima.
+      <br /><br />
+      <strong>Kondisi darurat akan langsung diarahkan ke IGD</strong> tanpa menunggu proses review.
     </div>
 
-    <div class="chat-log" id="chatLog">
-      <div class="msg bot">
-        <span class="label">Delima AI</span>
-        Halo! Saya asisten konsultasi Apotek Delima Farma (mode demo). Ceritakan keluhan Anda, atau pilih salah satu topik di bawah.
+    <!-- ===================== FORM INTAKE ===================== -->
+    <section id="formSection" class="card">
+      <form id="intakeForm">
+        <label for="keluhan_utama">Keluhan utama <span class="opt">(wajib)</span></label>
+        <textarea id="keluhan_utama" name="keluhan_utama" required
+          placeholder="Contoh: nyeri saat BAB sejak 3 hari, ada benjolan di anus"></textarea>
+
+        <label for="durasi_keluhan">Sudah berapa lama? <span class="opt">(wajib)</span></label>
+        <select id="durasi_keluhan" name="durasi_keluhan" required>
+          <option value="">Pilih durasi</option>
+          <option value="< 1 hari">Kurang dari 1 hari</option>
+          <option value="1-3 hari">1–3 hari</option>
+          <option value="4-7 hari">4–7 hari</option>
+          <option value="> 1 minggu">Lebih dari 1 minggu</option>
+          <option value="> 1 bulan">Lebih dari 1 bulan</option>
+        </select>
+
+        <label for="gejala_penyerta">Gejala lain yang menyertai <span class="opt">(opsional)</span></label>
+        <textarea id="gejala_penyerta" name="gejala_penyerta"
+          placeholder="Contoh: demam, mual, sulit duduk"></textarea>
+
+        <label>Kondisi khusus <span class="opt">(centang yang sesuai — opsional, tapi penting untuk keamanan)</span></label>
+        <div class="checkline"><input type="checkbox" id="kk_hamil" /> <label for="kk_hamil" style="margin:0;font-weight:400;">Sedang hamil</label></div>
+        <div class="checkline"><input type="checkbox" id="kk_menyusui" /> <label for="kk_menyusui" style="margin:0;font-weight:400;">Sedang menyusui</label></div>
+        <div class="checkline"><input type="checkbox" id="kk_kronis" /> <label for="kk_kronis" style="margin:0;font-weight:400;">Ada riwayat penyakit kronis tidak terkontrol (jantung/ginjal/hati/diabetes)</label></div>
+        <div class="checkline"><input type="checkbox" id="kk_alergi" /> <label for="kk_alergi" style="margin:0;font-weight:400;">Ada riwayat alergi obat</label></div>
+
+        <label for="nama_pasien">Nama <span class="opt">(opsional)</span></label>
+        <input type="text" id="nama_pasien" name="nama_pasien" placeholder="Nama Anda" />
+
+        <label for="no_hp_pasien">No. HP/WhatsApp <span class="opt">(wajib, untuk dihubungi balik)</span></label>
+        <input type="tel" id="no_hp_pasien" name="no_hp_pasien" required placeholder="08xxxxxxxxxx" />
+
+        <button type="submit" class="primary" id="submitBtn">Kirim Konsultasi</button>
+      </form>
+      <p id="formError" class="error-text" style="display:none;margin-top:10px;"></p>
+    </section>
+
+    <!-- ===================== DARURAT / RED FLAG ===================== -->
+    <section id="emergencySection" class="emergency" style="display:none;">
+      <h2>⚠️ Kondisi Anda memerlukan penanganan medis segera</h2>
+      <p>Silakan langsung ke IGD terdekat — jangan menunggu balasan chat untuk kondisi darurat.</p>
+
+      <div class="hospital">
+        <strong>🏥 RS Muhammadiyah Cirebon</strong>
       </div>
-    </div>
+      <div class="hospital">
+        <strong>🏥 RS Panti Abdi Dharma Cirebon</strong>
+        <span>Pendaftaran: (0231) 833-88-77 / 0853-1568-8833</span>
+        <span>Info: 0821-1932-5004</span>
+      </div>
+      <div class="hospital">
+        <strong>🏥 RS Permata Cirebon</strong>
+        <span>Pendaftaran: (0231) 833-88-77 / 0853-1568-8833</span>
+      </div>
 
-    <div class="suggestions">
-      <button type="button" data-q="Obat apa untuk sakit kepala ringan?">Sakit kepala ringan</button>
-      <button type="button" data-q="Anak demam 38°C, apa yang harus dilakukan?">Demam pada anak</button>
-      <button type="button" data-q="Apakah obat flu boleh diminum bersama obat maag?">Interaksi obat flu &amp; maag</button>
-      <button type="button" data-q="Jam buka apotek hari ini?">Jam buka apotek</button>
-    </div>
+      <p class="note" id="emergencySyncNote">Laporan ini sudah otomatis dicatat ke sistem apotek kami.</p>
+    </section>
 
-    <footer class="note">Delima Farma AI Consultation — prototype front-end statis, tanpa koneksi backend.</footer>
+    <!-- ===================== KONFIRMASI TERKIRIM ===================== -->
+    <section id="confirmSection" class="card" style="display:none;">
+      <h2 style="margin-top:0;">✅ Konsultasi kamu sudah diterima</h2>
+      <p>Tim apoteker kami akan meninjau dan membalas secepatnya. Simpan link berikut untuk cek status balasan:</p>
+      <div class="token-box">
+        <span id="statusLink">-</span>
+        <button class="secondary" id="copyLinkBtn" type="button">Salin</button>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:14px;">
+        Kasus terkait proktologi/bedah akan diteruskan ke dr. Wahyu Sholekhuddin, Sp.B. Kasus keluhan
+        umum akan dijawab langsung oleh apoteker kami.
+      </p>
+      <button class="secondary" id="newConsultBtn" type="button" style="margin-top:10px;">Buat konsultasi baru</button>
+    </section>
+
+    <footer class="contact">
+      <div class="divider"></div>
+      👨‍⚕️ <strong>dr. Wahyu Sholekhuddin, Sp.B, FICS, FISCP</strong><br />
+      📍 Cirebon, Jawa Barat, Indonesia · 📷 Instagram: @dr.wahyu_bedah<br /><br />
+      Praktik di:<br />
+      🏥 RS Panti Abdi Dharma Cirebon (@rspantiabdidharmacirebon)<br />
+      🏥 RS Permata Cirebon (@rspermatacirebon)<br /><br />
+      📞 Marketing: 0822-4023-0168 · 📞 Panti Abdi Dharma: 0821-1932-5004<br />
+      💬 Apoteker (WhatsApp): +62 853-2122-0024
+    </footer>
   </main>
 
-  <form class="composer" id="composerForm">
-    <div class="composer-inner">
-      <input
-        id="composerInput"
-        type="text"
-        placeholder="Tulis pertanyaan seputar obat atau kesehatan..."
-        autocomplete="off"
-      />
-      <button type="submit">Kirim</button>
-    </div>
-  </form>
+  <script type="module">
+    import { requireConfig, configReady } from "/assets/supabase-client.js";
+    import { detectRedFlag, detectKategori } from "/assets/red-flag.js";
 
-  <script>
-    const chatLog = document.getElementById('chatLog');
-    const form = document.getElementById('composerForm');
-    const input = document.getElementById('composerInput');
+    const formSection = document.getElementById("formSection");
+    const emergencySection = document.getElementById("emergencySection");
+    const confirmSection = document.getElementById("confirmSection");
+    const form = document.getElementById("intakeForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const formError = document.getElementById("formError");
+    const emergencySyncNote = document.getElementById("emergencySyncNote");
 
-    function addMessage(text, role) {
-      const el = document.createElement('div');
-      el.className = 'msg ' + role;
-      if (role === 'bot') {
-        el.innerHTML = '<span class="label">Delima AI</span>' + text;
-      } else {
-        el.textContent = text;
-      }
-      chatLog.appendChild(el);
-      el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    function showError(msg) {
+      formError.textContent = msg;
+      formError.style.display = "block";
     }
 
-    // Static canned responses for demo purposes only — no real clinical logic.
-    function getCannedReply(question) {
-      const q = question.toLowerCase();
-      if (q.includes('kepala')) {
-        return 'Untuk sakit kepala ringan, parasetamol biasanya menjadi pilihan pertama sesuai dosis pada kemasan. ' +
-          'Ini hanya info umum demo — kondisi berulang atau berat sebaiknya diperiksakan ke apoteker/dokter.';
-      }
-      if (q.includes('demam') || q.includes('anak')) {
-        return 'Untuk demam anak, pantau suhu tubuh dan pastikan cairan tercukupi. ' +
-          'Ini contoh jawaban demo, bukan diagnosis — untuk demam tinggi atau berkepanjangan, segera konsultasi ke tenaga medis.';
-      }
-      if (q.includes('interaksi') || q.includes('maag') || q.includes('flu')) {
-        return 'Beberapa kombinasi obat berpotensi berinteraksi. Contoh jawaban demo ini tidak memeriksa data interaksi nyata — ' +
-          'selalu tanyakan ke apoteker sebelum mengombinasikan obat.';
-      }
-      if (q.includes('jam') || q.includes('buka')) {
-        return 'Jam operasional apotek (contoh demo): 08.00–21.00 setiap hari. Silakan sesuaikan dengan jam operasional apotek Anda yang sebenarnya.';
-      }
-      return 'Terima kasih atas pertanyaannya. Ini adalah respons contoh (demo statis) — di versi produksi, jawaban akan dihasilkan ' +
-        'oleh sistem AI yang terhubung ke basis pengetahuan apotek dan tetap divalidasi oleh apoteker.';
+    function updateOfflineBadge() {
+      document.body.classList.toggle("is-offline", !navigator.onLine);
     }
+    window.addEventListener("online", updateOfflineBadge);
+    window.addEventListener("offline", updateOfflineBadge);
+    updateOfflineBadge();
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-      addMessage(text, 'user');
-      input.value = '';
-      setTimeout(function () {
-        addMessage(getCannedReply(text), 'bot');
-      }, 400);
+      formError.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Mengirim...";
+
+      const keluhan_utama = document.getElementById("keluhan_utama").value.trim();
+      const durasi_keluhan = document.getElementById("durasi_keluhan").value;
+      const gejala_penyerta = document.getElementById("gejala_penyerta").value.trim();
+      const nama_pasien = document.getElementById("nama_pasien").value.trim();
+      const no_hp_pasien = document.getElementById("no_hp_pasien").value.trim();
+      const kondisi_khusus = {
+        hamil: document.getElementById("kk_hamil").checked,
+        menyusui: document.getElementById("kk_menyusui").checked,
+        penyakit_kronis: document.getElementById("kk_kronis").checked,
+        alergi_obat: document.getElementById("kk_alergi").checked,
+      };
+
+      // Deteksi red flag berjalan LOKAL (tidak menunggu network) supaya
+      // pengarahan darurat tetap muncul walau koneksi lambat/putus.
+      const combinedText = keluhan_utama + " " + gejala_penyerta;
+      const { isRedFlag, reason } = await detectRedFlag(combinedText);
+      const kategori = detectKategori(combinedText);
+
+      if (isRedFlag) {
+        formSection.style.display = "none";
+        emergencySection.style.display = "block";
+      }
+
+      if (!configReady) {
+        if (!isRedFlag) {
+          showError("Sistem belum terhubung ke database (config kosong). Konsultasi belum bisa dikirim.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Kirim Konsultasi";
+        } else {
+          emergencySyncNote.textContent = "Sistem belum terhubung ke database — segera hubungi IGD langsung, laporan belum tersimpan.";
+        }
+        return;
+      }
+
+      try {
+        const supabase = requireConfig();
+        const { data, error } = await supabase
+          .from("consultations")
+          .insert({
+            nama_pasien: nama_pasien || null,
+            no_hp_pasien,
+            keluhan_utama,
+            durasi_keluhan,
+            gejala_penyerta: gejala_penyerta || null,
+            kondisi_khusus,
+            is_red_flag: isRedFlag,
+            red_flag_reason: reason,
+            kategori,
+            status: isRedFlag ? "red_flag_darurat" : "baru",
+          })
+          .select("access_token")
+          .single();
+
+        if (error) throw error;
+
+        if (isRedFlag) {
+          emergencySyncNote.textContent = "Laporan ini sudah otomatis dicatat ke sistem apotek kami.";
+        } else {
+          const token = data.access_token;
+          const link = `${location.origin}/status/${token}`;
+          document.getElementById("statusLink").textContent = link;
+          document.getElementById("copyLinkBtn").onclick = () => {
+            navigator.clipboard.writeText(link).catch(() => {});
+          };
+          formSection.style.display = "none";
+          confirmSection.style.display = "block";
+        }
+      } catch (err) {
+        if (isRedFlag) {
+          emergencySyncNote.textContent =
+            "Karena kamu sedang offline/koneksi bermasalah, laporan belum tersimpan ke sistem kami — " +
+            "segera hubungi IGD langsung, dan hubungi apotek begitu ada sinyal.";
+        } else {
+          showError("Gagal mengirim konsultasi: " + (err.message || "coba lagi.") );
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Kirim Konsultasi";
+        }
+      }
     });
 
-    document.querySelectorAll('.suggestions button').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        input.value = btn.getAttribute('data-q');
-        form.dispatchEvent(new Event('submit'));
-      });
+    document.getElementById("newConsultBtn").addEventListener("click", () => {
+      form.reset();
+      confirmSection.style.display = "none";
+      formSection.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Kirim Konsultasi";
     });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "name": "Delima Farma AI Consultation",
+  "short_name": "Delima Konsultasi",
+  "description": "Konsultasi awal apotek Delima Farma — intake terstruktur, ditinjau apoteker & dokter.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4faf7",
+  "theme_color": "#0d9457",
+  "lang": "id",
+  "icons": [
+    { "src": "/assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

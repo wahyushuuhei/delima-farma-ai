@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b3d2e" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Dashboard Apoteker — Delima Farma</title>
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="logo">💊</div>
+    <div>
+      <h1>Dashboard Konsultasi</h1>
+      <p>Delima Farma AI Consultation — akses staf</p>
+    </div>
+    <nav id="logoutNav" style="display:none;"><a href="#" id="logoutLink">Keluar</a></nav>
+  </header>
+
+  <main class="wide">
+    <!-- ===================== LOGIN ===================== -->
+    <section id="loginSection" class="card login-box" style="display:none;">
+      <h2 style="margin-top:0;">Login Apoteker/Dokter</h2>
+      <p style="font-size:12.5px;color:var(--muted);">
+        Akun dibuat manual oleh owner lewat Supabase dashboard — hubungi owner apotek kalau belum punya akun.
+      </p>
+      <label for="loginEmail">Email</label>
+      <input type="text" id="loginEmail" autocomplete="username" />
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" autocomplete="current-password" />
+      <button class="primary" id="loginBtn" type="button">Masuk</button>
+      <p id="loginError" class="error-text" style="display:none;margin-top:10px;"></p>
+    </section>
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <section id="dashboardSection" style="display:none;">
+      <div class="card" style="margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <strong style="font-size:13px;">Filter:</strong>
+        <button class="secondary" data-filter="all">Semua</button>
+        <button class="secondary" data-filter="baru">Baru</button>
+        <button class="secondary" data-filter="direview_apoteker">Direview</button>
+        <button class="secondary" data-filter="dieskalasi_dokter">Dieskalasi</button>
+        <button class="secondary" data-filter="red_flag_darurat">Darurat</button>
+        <button class="secondary" data-filter="selesai">Selesai</button>
+        <button class="secondary" id="refreshBtn" style="margin-left:auto;">↻ Refresh</button>
+      </div>
+
+      <div id="listLoading" class="card spinner">Memuat daftar konsultasi...</div>
+      <div id="listEmpty" class="card empty-state" style="display:none;">Tidak ada konsultasi untuk filter ini.</div>
+      <div id="listContainer"></div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { requireConfig, configReady, supabase } from "/assets/supabase-client.js";
+
+    const loginSection = document.getElementById("loginSection");
+    const dashboardSection = document.getElementById("dashboardSection");
+    const logoutNav = document.getElementById("logoutNav");
+    const listContainer = document.getElementById("listContainer");
+    const listLoading = document.getElementById("listLoading");
+    const listEmpty = document.getElementById("listEmpty");
+
+    let allConsultations = [];
+    let currentFilter = "all";
+    const deepLinkId = (() => {
+      const parts = location.pathname.split("/").filter(Boolean);
+      // /admin/consultation/{id}
+      if (parts[0] === "admin" && parts[1] === "consultation" && parts[2]) return parts[2];
+      return null;
+    })();
+
+    const WA_TARGET = "6282240230168"; // Marketing RS Muhammadiyah — bukan nomor pribadi dokter
+
+    function escalationTemplate(row) {
+      return `[ESKALASI KONSULTASI - PROKTOLOGI]
+Mohon diteruskan segera ke dr. Wahyu — bukan pertanyaan marketing umum.
+
+Keluhan: ${row.keluhan_utama}
+Durasi: ${row.durasi_keluhan || "-"}
+Gejala penyerta: ${row.gejala_penyerta || "-"}
+
+Link detail: ${location.origin}/admin/consultation/${row.id}`;
+    }
+
+    function kondisiKhususBadges(k) {
+      if (!k) return "";
+      const map = { hamil: "Hamil", menyusui: "Menyusui", penyakit_kronis: "Riwayat kronis", alergi_obat: "Alergi obat" };
+      return Object.entries(map)
+        .filter(([key]) => k[key])
+        .map(([, label]) => `<span class="badge kondisi-khusus">⚠️ ${label}</span>`)
+        .join(" ");
+    }
+
+    function renderList() {
+      const filtered = currentFilter === "all"
+        ? allConsultations
+        : allConsultations.filter((r) => r.status === currentFilter);
+
+      listContainer.innerHTML = "";
+      if (filtered.length === 0) {
+        listEmpty.style.display = "block";
+        return;
+      }
+      listEmpty.style.display = "none";
+
+      for (const row of filtered) {
+        const el = document.createElement("div");
+        el.className = "consult-row";
+        el.id = "row-" + row.id;
+        el.innerHTML = `
+          <div class="meta">
+            <span class="badge ${row.status}">${row.status.replaceAll("_", " ")}</span>
+            <span class="badge kategori">${row.kategori.replaceAll("_", " ")}</span>
+            ${row.is_red_flag ? '<span class="badge red_flag_darurat">RED FLAG</span>' : ""}
+            ${kondisiKhususBadges(row.kondisi_khusus)}
+            <span class="time">${new Date(row.created_at).toLocaleString("id-ID")}</span>
+          </div>
+          <p class="keluhan"><strong>${row.nama_pasien || "(anonim)"}</strong> — ${row.no_hp_pasien}</p>
+          <p class="keluhan">${row.keluhan_utama}</p>
+          <p style="font-size:12.5px;color:var(--muted);">Durasi: ${row.durasi_keluhan || "-"} · Gejala penyerta: ${row.gejala_penyerta || "-"}</p>
+          ${row.red_flag_reason ? `<p style="font-size:12.5px;color:var(--red-600);">Alasan red flag: ${row.red_flag_reason}</p>` : ""}
+
+          <p class="field-label">Jawaban</p>
+          <textarea data-role="jawaban" placeholder="Tulis jawaban untuk pasien...">${row.jawaban || ""}</textarea>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <button class="secondary" data-action="answer">Simpan &amp; Tandai Selesai</button>
+            <button class="secondary" data-action="escalate">Eskalasi ke Dokter</button>
+          </div>
+          <div data-role="escalate-block" style="display:none;margin-top:10px;">
+            <p class="field-label">Template pesan (kirim manual via WA ke Marketing RS Muhammadiyah)</p>
+            <pre class="copy-block" data-role="escalate-text"></pre>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <button class="secondary" data-action="copy-escalate">Salin teks</button>
+              <a data-role="wa-link" target="_blank" rel="noopener"><button class="secondary" type="button">Buka WhatsApp</button></a>
+            </div>
+          </div>
+          <p data-role="row-error" class="error-text" style="display:none;margin-top:8px;"></p>
+        `;
+
+        el.querySelector('[data-action="answer"]').addEventListener("click", async () => {
+          const jawaban = el.querySelector('[data-role="jawaban"]').value.trim();
+          const errEl = el.querySelector('[data-role="row-error"]');
+          errEl.style.display = "none";
+          if (!jawaban) {
+            errEl.textContent = "Isi jawaban dulu sebelum menandai selesai.";
+            errEl.style.display = "block";
+            return;
+          }
+          const { error } = await supabase
+            .from("consultations")
+            .update({ jawaban, status: "selesai", reviewed_by: "apoteker", reviewed_at: new Date().toISOString() })
+            .eq("id", row.id);
+          if (error) {
+            errEl.textContent = "Gagal menyimpan: " + error.message;
+            errEl.style.display = "block";
+            return;
+          }
+          await loadConsultations();
+        });
+
+        el.querySelector('[data-action="escalate"]').addEventListener("click", async () => {
+          const { error } = await supabase
+            .from("consultations")
+            .update({ status: "dieskalasi_dokter", reviewed_by: "apoteker" })
+            .eq("id", row.id);
+          const block = el.querySelector('[data-role="escalate-block"]');
+          const text = escalationTemplate(row);
+          el.querySelector('[data-role="escalate-text"]').textContent = text;
+          el.querySelector('[data-role="wa-link"]').href =
+            `https://wa.me/${WA_TARGET}?text=${encodeURIComponent(text)}`;
+          block.style.display = "block";
+          if (!error) await loadConsultations();
+        });
+
+        el.querySelector('[data-action="copy-escalate"]').addEventListener("click", () => {
+          navigator.clipboard.writeText(escalationTemplate(row)).catch(() => {});
+        });
+
+        listContainer.appendChild(el);
+      }
+
+      if (deepLinkId) {
+        const target = document.getElementById("row-" + deepLinkId);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    async function loadConsultations() {
+      listLoading.style.display = "block";
+      listContainer.innerHTML = "";
+      listEmpty.style.display = "none";
+      const { data, error } = await supabase
+        .from("consultations")
+        .select("*")
+        .order("created_at", { ascending: false });
+      listLoading.style.display = "none";
+      if (error) {
+        listEmpty.textContent = "Gagal memuat: " + error.message;
+        listEmpty.style.display = "block";
+        return;
+      }
+      allConsultations = data || [];
+      renderList();
+    }
+
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentFilter = btn.dataset.filter;
+        renderList();
+      });
+    });
+    document.getElementById("refreshBtn").addEventListener("click", loadConsultations);
+
+    // ---- Auth ----
+    let idleTimer = null;
+    function resetIdleTimer() {
+      if (idleTimer) clearTimeout(idleTimer);
+      // Sesi klinis timeout lebih pendek dari dashboard kasir biasa — data
+      // kesehatan pelanggan lebih sensitif.
+      idleTimer = setTimeout(() => supabase.auth.signOut(), 30 * 60 * 1000);
+    }
+    ["mousemove", "keydown", "click", "scroll"].forEach((evt) =>
+      window.addEventListener(evt, resetIdleTimer, { passive: true })
+    );
+
+    async function showLoggedIn() {
+      loginSection.style.display = "none";
+      dashboardSection.style.display = "block";
+      logoutNav.style.display = "block";
+      resetIdleTimer();
+      await loadConsultations();
+    }
+    function showLoggedOut() {
+      loginSection.style.display = "block";
+      dashboardSection.style.display = "none";
+      logoutNav.style.display = "none";
+      if (idleTimer) clearTimeout(idleTimer);
+    }
+
+    if (!configReady) {
+      document.body.innerHTML =
+        '<main><div class="card error-text">Sistem belum terhubung ke database (assets/config.js kosong).</div></main>';
+    } else {
+      supabase.auth.onAuthStateChange((_event, session) => {
+        session ? showLoggedIn() : showLoggedOut();
+      });
+      supabase.auth.getSession().then(({ data }) => {
+        data.session ? showLoggedIn() : showLoggedOut();
+      });
+
+      document.getElementById("loginBtn").addEventListener("click", async () => {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        const errEl = document.getElementById("loginError");
+        errEl.style.display = "none";
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          errEl.textContent = "Login gagal: " + error.message;
+          errEl.style.display = "block";
+        }
+      });
+
+      document.getElementById("logoutLink").addEventListener("click", (e) => {
+        e.preventDefault();
+        supabase.auth.signOut();
+      });
+    }
+  </script>
+</body>
+</html>
