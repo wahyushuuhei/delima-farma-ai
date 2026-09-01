@@ -65,12 +65,7 @@
 
     let allConsultations = [];
     let currentFilter = "all";
-    const deepLinkId = (() => {
-      const parts = location.pathname.split("/").filter(Boolean);
-      // /admin/consultation/{id}
-      if (parts[0] === "admin" && parts[1] === "consultation" && parts[2]) return parts[2];
-      return null;
-    })();
+    const deepLinkId = new URLSearchParams(location.search).get("consultation");
 
     const WA_TARGET = "6282240230168"; // Marketing RS Muhammadiyah — bukan nomor pribadi dokter
 
@@ -82,7 +77,7 @@ Keluhan: ${row.keluhan_utama}
 Durasi: ${row.durasi_keluhan || "-"}
 Gejala penyerta: ${row.gejala_penyerta || "-"}
 
-Link detail: ${location.origin}/admin/consultation/${row.id}`;
+Link detail: ${location.origin}/admin?consultation=${row.id}`;
     }
 
     function kondisiKhususBadges(k) {

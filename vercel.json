@@ -1,10 +1,6 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
-    { "source": "/status/:token", "destination": "/status.html" },
-    { "source": "/admin/consultation/:id", "destination": "/admin.html" }
-  ],
   "headers": [
     {
       "source": "/sw.js",

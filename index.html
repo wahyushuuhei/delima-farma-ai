@@ -208,7 +208,7 @@
           emergencySyncNote.textContent = "Laporan ini sudah otomatis dicatat ke sistem apotek kami.";
         } else {
           const token = data.access_token;
-          const link = `${location.origin}/status/${token}`;
+          const link = `${location.origin}/status?token=${token}`;
           document.getElementById("statusLink").textContent = link;
           document.getElementById("copyLinkBtn").onclick = () => {
             navigator.clipboard.writeText(link).catch(() => {});
