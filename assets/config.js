@@ -10,6 +10,6 @@
 //
 // TODO: isi setelah Supabase project B dibuat (Project Settings → API).
 window.__DELIMA_KONSULTASI_CONFIG__ = {
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: "",
+  SUPABASE_URL: "https://wzinehkimaboyyqiwifo.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_FRLUSJ2Lou2yRr53SqqUrg_CLntjz_-",
 };

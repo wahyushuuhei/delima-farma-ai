@@ -131,6 +131,12 @@
     const formError = document.getElementById("formError");
     const emergencySyncNote = document.getElementById("emergencySyncNote");
 
+    function generateAccessToken() {
+      const bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+    }
+
     function showError(msg) {
       formError.textContent = msg;
       formError.style.display = "block";
@@ -185,29 +191,33 @@
 
       try {
         const supabase = requireConfig();
-        const { data, error } = await supabase
-          .from("consultations")
-          .insert({
-            nama_pasien: nama_pasien || null,
-            no_hp_pasien,
-            keluhan_utama,
-            durasi_keluhan,
-            gejala_penyerta: gejala_penyerta || null,
-            kondisi_khusus,
-            is_red_flag: isRedFlag,
-            red_flag_reason: reason,
-            kategori,
-            status: isRedFlag ? "red_flag_darurat" : "baru",
-          })
-          .select("access_token")
-          .single();
+        // Token dibuat di browser (bukan minta database generate lalu dibaca
+        // balik pakai RETURNING/.select()) — sengaja begini karena anon TIDAK
+        // punya izin SELECT ke tabel consultations sama sekali (supaya tidak
+        // ada jalan pasien lain baca data pasien lain). Kalau pakai
+        // RETURNING, Postgres butuh verifikasi baris itu "terlihat" via
+        // policy SELECT, yang tidak ada untuk anon — hasilnya insert gagal
+        // dengan error RLS walau data sebenarnya valid.
+        const token = generateAccessToken();
+        const { error } = await supabase.from("consultations").insert({
+          access_token: token,
+          nama_pasien: nama_pasien || null,
+          no_hp_pasien,
+          keluhan_utama,
+          durasi_keluhan,
+          gejala_penyerta: gejala_penyerta || null,
+          kondisi_khusus,
+          is_red_flag: isRedFlag,
+          red_flag_reason: reason,
+          kategori,
+          status: isRedFlag ? "red_flag_darurat" : "baru",
+        });
 
         if (error) throw error;
 
         if (isRedFlag) {
           emergencySyncNote.textContent = "Laporan ini sudah otomatis dicatat ke sistem apotek kami.";
         } else {
-          const token = data.access_token;
           const link = `${location.origin}/status?token=${token}`;
           document.getElementById("statusLink").textContent = link;
           document.getElementById("copyLinkBtn").onclick = () => {

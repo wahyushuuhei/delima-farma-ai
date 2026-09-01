@@ -12,8 +12,16 @@ create extension if not exists pgcrypto;
 -- ----------------------------------------------------------------------------
 create table if not exists consultations (
   id uuid primary key default gen_random_uuid(),
-  -- token acak untuk akses balik oleh pasien (link /status/{token}) — tidak
-  -- pernah ditebak dari id yang berurutan
+  -- Token acak untuk akses balik oleh pasien (link /status?token=...) — tidak
+  -- pernah ditebak dari id yang berurutan. Default di kolom ini cuma jaring
+  -- pengaman (mis. insert manual lewat SQL Editor) — app SELALU generate
+  -- token di browser dan mengirimkannya eksplisit saat insert, TIDAK pernah
+  -- minta database generate lalu baca balik pakai RETURNING/.select().
+  -- Alasan: anon sengaja tidak punya policy SELECT di tabel ini (lihat
+  -- bagian RLS di bawah) — kalau insert pakai RETURNING, Postgres butuh
+  -- verifikasi baris itu "terlihat" lewat policy SELECT dulu, dan karena
+  -- tidak ada, insert-nya GAGAL dengan error RLS walau datanya valid. Ini
+  -- perilaku standar Postgres RLS + RETURNING, bukan bug di policy.
   access_token text unique not null default encode(gen_random_bytes(16), 'hex'),
   created_at timestamptz not null default now(),
 
