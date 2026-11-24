@@ -1,2 +1,3 @@
-# Skills & konfigurasi agen bersifat internal — jangan ikut ter-deploy sebagai file statis publik.
+# Skills, konfigurasi agen, dan berkas uji bersifat internal — jangan ikut ter-deploy sebagai file statis publik.
 .claude
+tests
