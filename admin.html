@@ -70,6 +70,14 @@
 
     const WA_TARGET = "6282240230168"; // Marketing RS Muhammadiyah — bukan nomor pribadi dokter
 
+    // Semua nilai dari database (diisi bebas oleh publik lewat form konsultasi)
+    // WAJIB lewat esc() sebelum masuk ke innerHTML — mencegah XSS tersimpan.
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (c) => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+      ));
+    }
+
     function escalationTemplate(row) {
       return `[ESKALASI KONSULTASI - PROKTOLOGI]
 Mohon diteruskan segera ke dr. Wahyu — bukan pertanyaan marketing umum.
@@ -108,19 +116,19 @@ Link detail: ${location.origin}/admin?consultation=${row.id}`;
         el.id = "row-" + row.id;
         el.innerHTML = `
           <div class="meta">
-            <span class="badge ${row.status}">${row.status.replaceAll("_", " ")}</span>
-            <span class="badge kategori">${row.kategori.replaceAll("_", " ")}</span>
+            <span class="badge ${esc(row.status)}">${esc(String(row.status).replaceAll("_", " "))}</span>
+            <span class="badge kategori">${esc(String(row.kategori).replaceAll("_", " "))}</span>
             ${row.is_red_flag ? '<span class="badge red_flag_darurat">RED FLAG</span>' : ""}
             ${kondisiKhususBadges(row.kondisi_khusus)}
             <span class="time">${new Date(row.created_at).toLocaleString("id-ID")}</span>
           </div>
-          <p class="keluhan"><strong>${row.nama_pasien || "(anonim)"}</strong> — ${row.no_hp_pasien}</p>
-          <p class="keluhan">${row.keluhan_utama}</p>
-          <p style="font-size:12.5px;color:var(--muted);">Durasi: ${row.durasi_keluhan || "-"} · Gejala penyerta: ${row.gejala_penyerta || "-"}</p>
-          ${row.red_flag_reason ? `<p style="font-size:12.5px;color:var(--red-600);">Alasan red flag: ${row.red_flag_reason}</p>` : ""}
+          <p class="keluhan"><strong>${esc(row.nama_pasien) || "(anonim)"}</strong> — ${esc(row.no_hp_pasien)}</p>
+          <p class="keluhan">${esc(row.keluhan_utama)}</p>
+          <p style="font-size:12.5px;color:var(--muted);">Durasi: ${esc(row.durasi_keluhan) || "-"} · Gejala penyerta: ${esc(row.gejala_penyerta) || "-"}</p>
+          ${row.red_flag_reason ? `<p style="font-size:12.5px;color:var(--red-600);">Alasan red flag: ${esc(row.red_flag_reason)}</p>` : ""}
 
           <p class="field-label">Jawaban</p>
-          <textarea data-role="jawaban" placeholder="Tulis jawaban untuk pasien...">${row.jawaban || ""}</textarea>
+          <textarea data-role="jawaban" placeholder="Tulis jawaban untuk pasien...">${esc(row.jawaban)}</textarea>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
             <button class="secondary" data-action="answer">Simpan &amp; Tandai Selesai</button>
             <button class="secondary" data-action="escalate">Eskalasi ke Dokter</button>
