@@ -1,3 +1,5 @@
-# Skills, konfigurasi agen, dan berkas uji bersifat internal — jangan ikut ter-deploy sebagai file statis publik.
+# Skills, konfigurasi agen, berkas uji, dan skema database bersifat internal — jangan ikut ter-deploy sebagai file statis publik.
+# supabase/ tetap ada di Git untuk migrasi manual; pengecualian ini hanya memengaruhi upload ke Vercel.
 .claude
 tests
+supabase
