@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>Carousel Delima Farma — template</title>
+<!--
+  Template carousel 4:5 (1080x1350). Setiap <section class="slide"> = satu PNG.
+  Ganti semua teks [DALAM KURUNG SIKU]. Jangan memuat sumber daya eksternal
+  (font/CDN/gambar URL): skrip ekspor memblokir jaringan.
+  Merek: nama "Apotek Delima Farma" + logo kapsul (assets/icon.svg), warna dari assets/style.css.
+  Username media sosial TIDAK ditulis di template; tambahkan hanya bila pemilik menyebut akun resminya.
+-->
+<style>
+  :root {
+    --green-900: #0b3d2e;
+    --green-700: #0d9457;
+    --green-600: #12b76a;
+    --green-50:  #ecfdf5;
+    --ink:       #16241f;
+    --muted:     #5b6b64;
+    --bg:        #f4faf7;
+    --border:    #dbeee4;
+    --amber-500: #d97706;
+    --red-600:   #dc2626;
+    --pink:      #f472b6; /* aksen kapsul pada logo */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #cfd8d3; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    display: flex; flex-direction: column; align-items: center; gap: 40px;
+    padding: 40px 0;
+  }
+  .slide {
+    position: relative; width: 1080px; height: 1350px; overflow: hidden;
+    background: var(--bg);
+    padding: 120px 96px 150px;
+    display: flex; flex-direction: column; justify-content: center; gap: 36px;
+  }
+  .slide.dark   { background: var(--green-900); color: #fff; }
+  .slide.accent { background: var(--green-700); color: #fff; }
+
+  .tag {
+    align-self: flex-start; font-size: 34px; font-weight: 700; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--green-700);
+    background: var(--green-50); border: 2px solid var(--border);
+    padding: 10px 26px; border-radius: 999px;
+  }
+  .dark .tag, .accent .tag { color: #fff; background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); }
+
+  h1 { font-size: 96px; line-height: 1.08; font-weight: 800; letter-spacing: -.01em; }
+  h2 { font-size: 72px; line-height: 1.12; font-weight: 800; }
+  p, li { font-size: 44px; line-height: 1.4; }
+  .lead { font-size: 50px; line-height: 1.35; color: var(--muted); }
+  .dark .lead, .accent .lead { color: rgba(255,255,255,.88); }
+  ul { list-style: none; display: flex; flex-direction: column; gap: 28px; }
+  li { padding-left: 64px; position: relative; }
+  li::before {
+    content: ""; position: absolute; left: 0; top: 14px; width: 36px; height: 36px;
+    border-radius: 50%; background: var(--green-600);
+  }
+  .callout {
+    background: #fff; border: 3px solid var(--border); border-left: 14px solid var(--green-700);
+    border-radius: 24px; padding: 36px 40px; font-size: 44px; line-height: 1.4;
+  }
+  .callout.warn   { border-left-color: var(--amber-500); background: #fff7ed; }
+  .callout.danger { border-left-color: var(--red-600);  background: #fef2f2; }
+  .callout b { font-weight: 800; }
+  .ref { font-size: 34px; line-height: 1.45; color: var(--muted); }
+  .ref li { font-size: 34px; padding-left: 0; }
+  .ref li::before { display: none; }
+  .dark .ref, .accent .ref { color: rgba(255,255,255,.88); }
+
+  .progress { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; background: rgba(11,61,46,.12); }
+  .progress > i { display: block; height: 100%; background: var(--green-600); }
+  .dark .progress, .accent .progress { background: rgba(255,255,255,.2); }
+  .dark .progress > i, .accent .progress > i { background: #fff; }
+  .foot {
+    position: absolute; left: 96px; right: 96px; bottom: 44px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 32px; color: var(--muted);
+  }
+  .dark .foot, .accent .foot { color: rgba(255,255,255,.8); }
+  .swipe { font-weight: 700; }
+  .brand { display: inline-flex; align-items: center; gap: 16px; font-weight: 700; }
+  .brand .logo { width: 48px; height: 48px; }
+</style>
+</head>
+<body>
+
+<!-- 1. Sampul / hook -->
+<section class="slide dark" data-slide="1">
+  <span class="tag">[Topik · Edukasi]</span>
+  <h1>[Hook: satu pertanyaan atau pernyataan tajam]</h1>
+  <p class="lead">[Satu kalimat janji: apa yang dipelajari pembaca]</p>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:11%"></i></div>
+</section>
+
+<!-- 2. Janji / konteks -->
+<section class="slide" data-slide="2">
+  <span class="tag">Kenapa penting</span>
+  <h2>[Masalah yang sering terjadi]</h2>
+  <p>[Penjelasan singkat dalam bahasa sehari-hari. Maksimal sekitar 35 kata.]</p>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:22%"></i></div>
+</section>
+
+<!-- 3-6. Slide isi (satu gagasan per slide) -->
+<section class="slide" data-slide="3">
+  <span class="tag">01</span>
+  <h2>[Gagasan pertama]</h2>
+  <p>[Penjelasan dan contoh nyata.]</p>
+  <div class="callout"><b>Inti:</b> [satu kalimat yang mudah diingat]</div>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:33%"></i></div>
+</section>
+
+<section class="slide" data-slide="4">
+  <span class="tag">02</span>
+  <h2>[Gagasan kedua]</h2>
+  <p>[Penjelasan dan contoh nyata.]</p>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:44%"></i></div>
+</section>
+
+<section class="slide" data-slide="5">
+  <span class="tag">03</span>
+  <h2>[Gagasan ketiga]</h2>
+  <p>[Penjelasan dan contoh nyata.]</p>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:55%"></i></div>
+</section>
+
+<section class="slide" data-slide="6">
+  <span class="tag">04</span>
+  <h2>[Gagasan keempat]</h2>
+  <p>[Penjelasan dan contoh nyata.]</p>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:66%"></i></div>
+</section>
+
+<!-- 7. Ringkasan -->
+<section class="slide accent" data-slide="7">
+  <span class="tag">Ringkasannya</span>
+  <h2>[3 hal yang bisa dilakukan hari ini]</h2>
+  <ul>
+    <li>[Langkah 1]</li>
+    <li>[Langkah 2]</li>
+    <li>[Langkah 3]</li>
+  </ul>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:77%"></i></div>
+</section>
+
+<!-- 8. Kapan ke dokter (hapus bila tidak relevan) -->
+<section class="slide" data-slide="8">
+  <span class="tag">Kapan ke dokter</span>
+  <h2>[Tanda yang tidak boleh ditunda]</h2>
+  <div class="callout danger"><b>Segera ke IGD</b> bila: [tanda bahaya yang sudah ditinjau tenaga kesehatan]</div>
+  <div class="callout warn"><b>Periksa ke dokter</b> bila: [kondisi yang perlu evaluasi]</div>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span><span class="swipe">Geser →</span></div>
+  <div class="progress"><i style="width:88%"></i></div>
+</section>
+
+<!-- 9. Penutup / CTA + rujukan -->
+<section class="slide dark" data-slide="9">
+  <span class="tag">Penutup</span>
+  <h2>[Pesan utama dalam satu kalimat]</h2>
+  <p class="lead">[Satu ajakan saja, mis. simpan atau bagikan ke keluarga]</p>
+  <ul class="ref">
+    <li>Rujukan: [Penulis. Judul. Jurnal/Lembaga. Tahun. PMID/DOI]</li>
+    <li>Informasi edukasi, bukan pengganti pemeriksaan oleh tenaga kesehatan.</li>
+  </ul>
+  <div class="foot"><span class="brand"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#0d9457"/><g transform="translate(50 50) rotate(45)"><rect x="-28" y="-12" width="56" height="24" rx="12" fill="#ffffff"/><rect x="-28" y="-12" width="28" height="24" rx="12" fill="#f472b6"/></g></svg>Apotek Delima Farma</span></div>
+  <div class="progress"><i style="width:100%"></i></div>
+</section>
+
+</body>
+</html>
