@@ -1,6 +1,6 @@
 ---
 name: carousel
-description: Membuat carousel Instagram/Facebook rasio 4:5 (1080x1350) untuk Apotek Delima Farma — edukasi kesehatan untuk awam, penggunaan obat yang benar, info layanan apotek dan aplikasi konsultasi. Memandu dari brief, naskah berrujukan, pratinjau HTML, sampai ekspor PNG dan caption. Gunakan saat pengguna menyebut carousel, slide IG, swipe post, konten edukasi apotek, atau desain slide sosial media. Untuk carousel edukasi pribadi dr. Wahyu (proktologi/PBPI), pakai skill carousel-edukasi-dr-wahyu bila tersedia karena aturannya lebih ketat.
+description: Membuat carousel Instagram/Facebook rasio 4:5 (1080x1350) untuk Apotek Delima Farma — edukasi kesehatan untuk awam, penggunaan obat yang benar, info layanan apotek dan aplikasi konsultasi. Memandu dari brief, naskah berrujukan, pratinjau HTML, sampai ekspor PNG dan caption. Gunakan saat pengguna menyebut carousel, slide IG, swipe post, konten edukasi apotek, atau desain slide sosial media. Khusus akun apotek; bukan untuk konten edukasi pribadi dr. Wahyu (proktologi/bedah/PBPI), yang memakai skill terpisah.
 license: Internal Delima Farma — hanya untuk penggunaan internal
 metadata:
   version: "1.0"
@@ -10,6 +10,15 @@ metadata:
 # Carousel Delima Farma
 
 Menghasilkan carousel yang aman secara etika, terbaca di ponsel, dan konsisten dengan merek aplikasi Delima. Teks slide selalu dibuat dengan kode HTML, tidak pernah di dalam gambar buatan AI, supaya tidak ada salah ketik pada informasi kesehatan.
+
+## Cakupan: akun Apotek Delima Farma saja
+
+Skill ini hanya untuk akun dan merek **Apotek Delima Farma**. Konten edukasi medis pribadi dr. Wahyu (akun, gelar, gaya, dan alur persetujuan sendiri; termasuk proktologi, bedah, dan PBPI) **bukan** cakupan skill ini.
+
+- Bila permintaan menyebut dr. Wahyu secara pribadi, akun pribadinya, proktologi/bedah, atau PBPI: berhenti, jelaskan satu kalimat, dan arahkan ke skill konten pribadinya di akun Anda (`carousel-edukasi-dr-wahyu`, `zernio-bedah-storytelling`) bila tersedia.
+- Jangan mencampur: tidak memakai nama, gelar, akun, atau tautan praktik pribadi dr. Wahyu di konten apotek, dan tidak memakai akun apotek di konten pribadinya.
+- Topik yang menuntut otoritas klinis bedah atau proktologi tidak dibuat atas nama apotek tanpa tinjauan dokter yang bersangkutan.
+- Identitas: pakai nama "Apotek Delima Farma", logo, dan warna aplikasi. Username media sosial resmi hanya dipakai bila pemilik menyebutkannya; jangan menebak atau mengarang username.
 
 ## Aturan keras (tidak boleh dilanggar)
 
@@ -25,7 +34,7 @@ Menghasilkan carousel yang aman secara etika, terbaca di ponsel, dan konsisten d
 ## Alur 4 tahap (jangan dilompati)
 
 ### 1. Brief
-Tanyakan hanya yang belum jelas, dalam satu pesan: topik, sasaran pembaca (awam, ibu hamil, lansia, pasien kronis), tujuan (edukasi, trafik ke konsultasi, kunjungan), platform, jumlah slide (bawaan 7–9), nama akun dan ajakan bertindak (CTA) yang boleh dipakai. Jika topik menyentuh pengobatan keras atau kondisi serius, tandai perlu tinjau apoteker/dokter.
+Tanyakan hanya yang belum jelas, dalam satu pesan: topik, sasaran pembaca (awam, ibu hamil, lansia, pasien kronis), tujuan (edukasi, trafik ke konsultasi, kunjungan), platform, jumlah slide (bawaan 7–9), dan ajakan bertindak (CTA) yang boleh dipakai. Nama akun hanya ditanyakan bila pemilik ingin mencantumkannya di slide; jika tidak, footer memakai nama "Apotek Delima Farma" dan logo. Jika topik menyentuh pengobatan keras atau kondisi serius, tandai perlu tinjau apoteker/dokter.
 
 ### 2. Naskah berrujukan
 - Cari rujukan lebih dulu, catat penulis, jurnal/lembaga, tahun, PMID atau DOI.
@@ -57,10 +66,10 @@ Alternatif: daftar "X kesalahan umum", tutorial langkah, atau mitos vs fakta, bi
 ## Aturan desain
 
 - Kanvas 1080x1350 px per slide. Teks isi minimal 40 px, judul 64–96 px, kontras tinggi.
-- Warna merek dari aplikasi: hijau tua `#0b3d2e`, hijau `#0d9457`, hijau terang `#12b76a`, hijau muda `#ecfdf5`, teks `#16241f`, latar `#f4faf7`. Peringatan memakai amber `#d97706`, bahaya `#dc2626`, dan hanya untuk tanda bahaya.
+- Warna dan logo merek dari aplikasi (logo kapsul `assets/icon.svg`, aksen pink `#f472b6` hanya dari logo): hijau tua `#0b3d2e`, hijau `#0d9457`, hijau terang `#12b76a`, hijau muda `#ecfdf5`, teks `#16241f`, latar `#f4faf7`. Peringatan memakai amber `#d97706`, bahaya `#dc2626`, dan hanya untuk tanda bahaya.
 - Font: template memakai tumpukan font sistem. Berkas font merek tidak ada di repo; bila pemilik akun punya, sematkan lewat `@font-face` dari berkas lokal. Jangan memuat Google Fonts (jaringan keluar diblokir dan alasan privasi).
 - Bila memakai gambar, sematkan sebagai data URI dan periksa lisensinya. Ilustrasi sederhana dibuat dengan SVG/HTML.
-- Bilah progres, penanda geser (kecuali slide terakhir), dan nama akun ada di setiap slide.
+- Bilah progres, penanda geser (kecuali slide terakhir), serta logo dan nama "Apotek Delima Farma" ada di setiap slide (sudah ada di template). Jangan menambahkan username yang tidak diberikan pemilik.
 
 ## Pemeriksaan sebelum menyerahkan
 

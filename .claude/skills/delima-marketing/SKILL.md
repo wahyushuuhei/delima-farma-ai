@@ -1,6 +1,6 @@
 ---
 name: delima-marketing
-description: Merancang strategi pemasaran Apotek Delima Farma — positioning, segmentasi pelanggan, bauran saluran (Google Business Profile, WhatsApp Business, media sosial, program loyalitas, iklan berbayar), promosi yang patuh etika dan regulasi, promosi layanan konsultasi aplikasi, rencana 30/60/90 hari, anggaran, KPI, dan eksperimen. Gunakan saat pengguna menyebut marketing, promosi, branding apotek, pelanggan baru, loyalitas, iklan, WhatsApp blast, ulasan Google, atau cara menaikkan kunjungan. Tidak menjalankan iklan, mengirim pesan massal, atau mengubah akun tanpa persetujuan eksplisit.
+description: Merancang strategi pemasaran Apotek Delima Farma — positioning, segmentasi pelanggan, bauran saluran (Google Business Profile, WhatsApp Business, media sosial, program loyalitas, iklan berbayar), promosi yang patuh etika dan regulasi, promosi layanan konsultasi aplikasi, rencana 30/60/90 hari, anggaran, KPI, dan eksperimen. Gunakan saat pengguna menyebut marketing, promosi, branding apotek, pelanggan baru, loyalitas, iklan, WhatsApp blast, ulasan Google, atau cara menaikkan kunjungan. Ini untuk strategi dan rencana pemasaran, bukan untuk membuat konten (slide/carousel pakai skill carousel, video pakai ig-reel, kalender konten pakai content-strategy). Khusus merek apotek, bukan praktik pribadi dr. Wahyu. Tidak menjalankan iklan, mengirim pesan massal, atau mengubah akun tanpa persetujuan eksplisit.
 license: Internal Delima Farma — hanya untuk penggunaan internal
 metadata:
   version: "1.0"
@@ -10,6 +10,15 @@ metadata:
 # Delima Marketing
 
 Pemasaran apotek berbeda dari ritel biasa: kepercayaan dan keselamatan pasien lebih penting daripada diskon, dan sebagian produk tidak boleh dipromosikan kepada publik. Skill ini membantu tumbuh tanpa melanggar etika, regulasi, atau privasi.
+
+## Cakupan: akun Apotek Delima Farma saja
+
+Skill ini hanya untuk akun dan merek **Apotek Delima Farma**. Konten edukasi medis pribadi dr. Wahyu (akun, gelar, gaya, dan alur persetujuan sendiri; termasuk proktologi, bedah, dan PBPI) **bukan** cakupan skill ini.
+
+- Bila permintaan menyebut dr. Wahyu secara pribadi, akun pribadinya, proktologi/bedah, atau PBPI: berhenti, jelaskan satu kalimat, dan arahkan ke skill konten pribadinya di akun Anda (`carousel-edukasi-dr-wahyu`, `zernio-bedah-storytelling`) bila tersedia.
+- Jangan mencampur: tidak memakai nama, gelar, akun, atau tautan praktik pribadi dr. Wahyu di konten apotek, dan tidak memakai akun apotek di konten pribadinya.
+- Topik yang menuntut otoritas klinis bedah atau proktologi tidak dibuat atas nama apotek tanpa tinjauan dokter yang bersangkutan.
+- Identitas: pakai nama "Apotek Delima Farma", logo, dan warna aplikasi. Username media sosial resmi hanya dipakai bila pemilik menyebutkannya; jangan menebak atau mengarang username.
 
 ## Batas dan aturan keras
 

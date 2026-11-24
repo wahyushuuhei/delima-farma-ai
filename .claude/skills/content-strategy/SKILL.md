@@ -1,6 +1,6 @@
 ---
 name: content-strategy
-description: Merancang strategi konten media sosial Apotek Delima Farma — pilar konten, segmen audiens, corong (funnel), campuran format (reel, carousel, story), kalender 4 minggu, KPI, ritme evaluasi mingguan, dan keputusan berbasis data (Pareto). Gunakan saat pengguna meminta strategi konten, kalender konten, ide konten, pilar konten, rencana posting, evaluasi performa konten, atau bingung harus posting apa. Menghasilkan rencana siap dijalankan dengan hipotesis yang bisa diuji, bukan klaim "waktu posting terbaik" yang tak berdasar.
+description: Merancang strategi konten media sosial Apotek Delima Farma — pilar konten, segmen audiens, corong (funnel), campuran format (reel, carousel, story), kalender 4 minggu, KPI, ritme evaluasi mingguan, dan keputusan berbasis data (Pareto). Gunakan saat pengguna meminta strategi konten, kalender konten, ide konten, pilar konten, rencana posting, evaluasi performa konten, atau bingung harus posting apa. Menghasilkan rencana siap dijalankan dengan hipotesis yang bisa diuji, bukan klaim "waktu posting terbaik" yang tak berdasar. Khusus akun apotek; strategi konten pribadi dr. Wahyu (proktologi/bedah/PBPI) dikelola terpisah.
 license: Internal Delima Farma — hanya untuk penggunaan internal
 metadata:
   version: "1.0"
@@ -10,6 +10,15 @@ metadata:
 # Content Strategy Delima Farma
 
 Strategi konten yang realistis untuk apotek kecil: sedikit pilar, ritme yang bisa dipertahankan, ukuran keberhasilan jelas, dan keputusan yang diambil dari data akun sendiri. Konten kesehatan memiliki risiko etika, jadi gerbang kepatuhan ada di dalam proses, bukan di akhir.
+
+## Cakupan: akun Apotek Delima Farma saja
+
+Skill ini hanya untuk akun dan merek **Apotek Delima Farma**. Konten edukasi medis pribadi dr. Wahyu (akun, gelar, gaya, dan alur persetujuan sendiri; termasuk proktologi, bedah, dan PBPI) **bukan** cakupan skill ini.
+
+- Bila permintaan menyebut dr. Wahyu secara pribadi, akun pribadinya, proktologi/bedah, atau PBPI: berhenti, jelaskan satu kalimat, dan arahkan ke skill konten pribadinya di akun Anda (`carousel-edukasi-dr-wahyu`, `zernio-bedah-storytelling`) bila tersedia.
+- Jangan mencampur: tidak memakai nama, gelar, akun, atau tautan praktik pribadi dr. Wahyu di konten apotek, dan tidak memakai akun apotek di konten pribadinya.
+- Topik yang menuntut otoritas klinis bedah atau proktologi tidak dibuat atas nama apotek tanpa tinjauan dokter yang bersangkutan.
+- Identitas: pakai nama "Apotek Delima Farma", logo, dan warna aplikasi. Username media sosial resmi hanya dipakai bila pemilik menyebutkannya; jangan menebak atau mengarang username.
 
 ## Aturan keras (berlaku untuk semua konten yang dihasilkan)
 

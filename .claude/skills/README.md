@@ -4,6 +4,8 @@ Folder ini berisi Agent Skills untuk Claude Code di proyek ini (`.claude/skills/
 
 Folder `.claude/` dikecualikan dari deploy Vercel lewat `.vercelignore`, supaya skill internal tidak terbuka sebagai file statis publik. Ini upaya terbaik dan **belum diverifikasi di produksi**: setelah deploy berikutnya, buka `/.claude/skills/README.md` di domain produksi dan pastikan hasilnya 404.
 
+Panduan pemakaian: `DAFTAR-SKILL.md` (perintah dan contoh) dan `PANDUAN-HP.md` (langkah sederhana dari HP).
+
 ## Inventaris
 
 ### A. Skill resmi Anthropic (salinan verbatim, Apache-2.0)
@@ -63,6 +65,18 @@ Dilakukan sebelum pemasangan terhadap 7 skill upstream:
 Catatan: skill upstream mengasumsikan paket `openpyxl`, `pandas`, `docx`, `pptxgenjs`, `pypdf`, dan LibreOffice tersedia di lingkungan.
 
 Skill custom ditinjau terhadap hal yang sama dan dipindai untuk rahasia (JWT, kunci, URL proyek Supabase), nomor telepon, dan pola data pribadi: tidak ada.
+
+## Uji pemanggilan (sesi Claude Code baru)
+
+Tiap skill diuji di proses `claude` baru pada folder proyek: terdaftar sebagai perintah `/nama` dan jawabannya memuat isi spesifik skill.
+
+| Uji | Hasil |
+|---|---|
+| Perintah `/nama` untuk 15 skill (8 custom + 7 upstream) | 15 dari 15 lolos |
+| Pemicu otomatis tanpa `/` (model Sonnet, prompt wajar): carousel, ig-reel, delima-sales, delima-stock, delima-audit | 5 dari 5 lolos |
+| Pemicu otomatis pada model kecil dengan prompt dibatasi | Tidak selalu; gunakan `/nama` untuk hasil pasti |
+
+Uji dapat diulang dengan `claude -p "/delima-stock <pertanyaan>" --output-format stream-json --verbose` dari folder proyek.
 
 ## Memperbarui skill upstream
 

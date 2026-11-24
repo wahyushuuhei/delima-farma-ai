@@ -1,6 +1,6 @@
 ---
 name: ig-reel
-description: Menyusun naskah, shot list, teks layar, caption, dan paket produksi Instagram Reels untuk Apotek Delima Farma (edukasi kesehatan, cara pakai obat yang benar, behind-the-scenes apotek, info layanan dan aplikasi konsultasi). Gunakan saat pengguna menyebut reel, reels, video pendek IG, naskah video, hook video, shot list, atau skrip TikTok/Shorts. Menghasilkan opsi hook, naskah per detik, daftar pengambilan gambar, caption, dan checklist kepatuhan. Tidak memposting atau menjadwalkan tanpa persetujuan eksplisit.
+description: Menyusun naskah, shot list, teks layar, caption, dan paket produksi Instagram Reels untuk Apotek Delima Farma (edukasi kesehatan, cara pakai obat yang benar, behind-the-scenes apotek, info layanan dan aplikasi konsultasi). Gunakan saat pengguna menyebut reel, reels, video pendek IG, naskah video, hook video, shot list, atau skrip TikTok/Shorts. Menghasilkan opsi hook, naskah per detik, daftar pengambilan gambar, caption, dan checklist kepatuhan. Khusus akun apotek; bukan untuk konten pribadi dr. Wahyu (proktologi/bedah/PBPI). Tidak memposting atau menjadwalkan tanpa persetujuan eksplisit.
 license: Internal Delima Farma — hanya untuk penggunaan internal
 metadata:
   version: "1.0"
@@ -10,6 +10,15 @@ metadata:
 # IG Reel Delima Farma
 
 Mengubah satu ide menjadi paket produksi Reel yang siap direkam oleh tim apotek: hook, naskah, shot list, teks layar, caption, dan pemeriksaan kepatuhan. Fokusnya memandu proses, bukan menghasilkan video palsu atau klaim kesehatan yang tak terverifikasi.
+
+## Cakupan: akun Apotek Delima Farma saja
+
+Skill ini hanya untuk akun dan merek **Apotek Delima Farma**. Konten edukasi medis pribadi dr. Wahyu (akun, gelar, gaya, dan alur persetujuan sendiri; termasuk proktologi, bedah, dan PBPI) **bukan** cakupan skill ini.
+
+- Bila permintaan menyebut dr. Wahyu secara pribadi, akun pribadinya, proktologi/bedah, atau PBPI: berhenti, jelaskan satu kalimat, dan arahkan ke skill konten pribadinya di akun Anda (`carousel-edukasi-dr-wahyu`, `zernio-bedah-storytelling`) bila tersedia.
+- Jangan mencampur: tidak memakai nama, gelar, akun, atau tautan praktik pribadi dr. Wahyu di konten apotek, dan tidak memakai akun apotek di konten pribadinya.
+- Topik yang menuntut otoritas klinis bedah atau proktologi tidak dibuat atas nama apotek tanpa tinjauan dokter yang bersangkutan.
+- Identitas: pakai nama "Apotek Delima Farma", logo, dan warna aplikasi. Username media sosial resmi hanya dipakai bila pemilik menyebutkannya; jangan menebak atau mengarang username.
 
 ## Aturan keras (tidak boleh dilanggar)
 
